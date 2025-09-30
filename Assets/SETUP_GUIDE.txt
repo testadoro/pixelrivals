@@ -1,0 +1,181 @@
+PIXELRIVALS - UNITY SCENE SETUP GUIDE
+======================================
+
+QUICK START CHECKLIST
+---------------------
+[ ] Create new scene (File > New Scene > URP)
+[ ] Setup ground plane
+[ ] Create player with PlayerController
+[ ] Create conquest zone
+[ ] Create bot prefab
+[ ] Create projectile prefab
+[ ] Setup UI canvas with controls
+[ ] Add GameManager
+[ ] Test in Play mode
+
+DETAILED SETUP INSTRUCTIONS
+---------------------------
+
+1. GROUND SETUP
+   - Create 3D Object > Plane
+   - Scale: (10, 1, 10)
+   - Tag: "Environment"
+   - Add material (optional)
+
+2. PLAYER SETUP
+   - Create 3D Object > Capsule
+   - Name: "Player"
+   - Tag: "Player"
+   - Position: (0, 1, 0)
+   - Add Component: PlayerController
+   - Create Empty child: "FirePoint"
+     - Position: (0, 1, 1)
+   - Add Component: Character Controller
+     - Radius: 0.5
+     - Height: 2
+
+3. CONQUEST ZONE
+   - Create 3D Object > Cylinder
+   - Name: "ConquestZone"
+   - Position: (0, 0.5, 0)
+   - Scale: (5, 0.5, 5)
+   - Add Component: Box Collider
+     - Is Trigger: ✓
+     - Size: (5, 1, 5)
+   - Add Component: Conquest Zone
+   - Create 3 materials:
+     - NeutralMaterial (gray)
+     - PlayerMaterial (blue)
+     - EnemyMaterial (red)
+   - Assign materials in ConquestZone script
+
+4. BOT PREFAB
+   - Create 3D Object > Capsule
+   - Name: "Bot"
+   - Position: (0, 1, 0)
+   - Add Component: BotAI
+   - Add Component: Character Controller
+   - Create Empty child: "FirePoint"
+     - Position: (0, 1, 1)
+   - Drag to Assets/Prefabs folder to create prefab
+
+5. PROJECTILE PREFAB
+   - Create 3D Object > Sphere
+   - Name: "Projectile"
+   - Scale: (0.2, 0.2, 0.2)
+   - Add Component: Rigidbody
+     - Is Kinematic: ✓
+   - Add Component: Sphere Collider
+     - Is Trigger: ✓
+   - Add Component: Projectile
+   - Add material (optional, e.g., emissive)
+   - Drag to Assets/Prefabs folder
+
+6. UI CANVAS SETUP
+   a) Create Canvas
+      - UI > Canvas
+      - Render Mode: Screen Space - Overlay
+      - Canvas Scaler: Scale With Screen Size
+      - Reference Resolution: 1920x1080
+
+   b) Virtual Joystick
+      - Create UI > Image (name: "Joystick")
+      - Anchor: Bottom-Left
+      - Position: (200, 200, 0)
+      - Size: (200, 200)
+      - Create child UI > Image (name: "Handle")
+      - Size: (80, 80)
+      - Add Component to parent: VirtualJoystick
+      - Assign Background and Handle references
+
+   c) Attack Button
+      - Create UI > Button (name: "AttackButton")
+      - Anchor: Bottom-Right
+      - Position: (-200, 200, 0)
+      - Size: (100, 100)
+      - Text: "Attack"
+
+   d) Special Ability Button
+      - Create UI > Button (name: "SpecialButton")
+      - Anchor: Bottom-Right
+      - Position: (-200, 350, 0)
+      - Size: (100, 100)
+      - Add child UI > Image (cooldown overlay)
+        - Image Type: Filled
+        - Fill Method: Radial 360
+      - Text: "Special"
+
+   e) Health Bar
+      - Create UI > Slider (name: "HealthBar")
+      - Anchor: Top-Left
+      - Position: (300, -50, 0)
+      - Width: 300
+      - Max Value: 1
+      - Create child UI > Text (health text)
+
+   f) Conquest Bar
+      - Create UI > Slider (name: "ConquestBar")
+      - Anchor: Top-Center
+      - Position: (0, -50, 0)
+      - Width: 400
+      - Min Value: 0
+      - Max Value: 1
+      - Create child UI > Text (zone status)
+
+   g) Add GameHUD Component
+      - Select Canvas
+      - Add Component: GameHUD
+      - Assign all references:
+        - Player
+        - Health Bar
+        - Health Text
+        - Special Ability Cooldown Image
+        - Attack Button
+        - Special Ability Button
+        - Conquest Zone
+        - Conquest Bar
+        - Conquest Text
+
+7. GAME MANAGER
+   - Create Empty GameObject: "GameManager"
+   - Add Component: GameManager
+   - Create spawn point objects:
+     - Create 3 Empty objects for player team spawns
+     - Create 3 Empty objects for enemy team spawns
+   - Assign Bot Prefab and spawn points
+
+8. CAMERA SETUP
+   - Position Main Camera: (0, 15, -10)
+   - Rotation: (45, 0, 0)
+   - Or follow player with a camera script
+
+9. URP SETTINGS (Optional)
+   - Create URP Asset: Right-click in Project > Create > Rendering > URP > Pipeline Asset
+   - Edit > Project Settings > Graphics > Scriptable Render Pipeline Settings
+   - Assign the URP asset
+
+10. TESTING
+    - Press Play
+    - Use joystick to move
+    - Click attack button
+    - Test special ability
+    - Check conquest zone capture
+    - Verify bot AI behavior
+
+COMMON ISSUES
+-------------
+- Player not moving: Check PlayerController has MoveDirection set via joystick
+- Bots not spawning: Verify Bot Prefab and spawn points in GameManager
+- Projectiles not working: Check firePoint position and projectile prefab assignment
+- UI not responding: Verify EventSystem exists in scene
+- Collisions not working: Check layer collision matrix and collider settings
+
+PERFORMANCE TIPS FOR MOBILE
+---------------------------
+- Use object pooling for projectiles
+- Limit draw calls with batching
+- Optimize URP settings for mobile
+- Use Level of Detail (LOD) for 3D models
+- Compress textures
+- Limit post-processing effects
+- Target 60 FPS on mid-range devices
