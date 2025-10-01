@@ -1,0 +1,208 @@
+{
+  "prefabs": {
+    "Player": {
+      "name": "Player",
+      "tag": "Player",
+      "components": [
+        {
+          "type": "Transform",
+          "position": {"x": 0, "y": 1, "z": 0},
+          "rotation": {"x": 0, "y": 0, "z": 0},
+          "scale": {"x": 1, "y": 1, "z": 1}
+        },
+        {
+          "type": "MeshFilter",
+          "mesh": "Capsule"
+        },
+        {
+          "type": "MeshRenderer",
+          "material": "Default"
+        },
+        {
+          "type": "CharacterController",
+          "radius": 0.5,
+          "height": 2.0,
+          "center": {"x": 0, "y": 0, "z": 0}
+        },
+        {
+          "type": "PlayerController",
+          "moveSpeed": 5.0,
+          "rotationSpeed": 10.0,
+          "attackCooldown": 0.5,
+          "specialAbilityCooldown": 5.0,
+          "maxHealth": 100
+        }
+      ],
+      "children": [
+        {
+          "name": "FirePoint",
+          "position": {"x": 0, "y": 1, "z": 1}
+        }
+      ]
+    },
+    "Bot": {
+      "name": "Bot",
+      "tag": "Untagged",
+      "components": [
+        {
+          "type": "Transform",
+          "position": {"x": 0, "y": 1, "z": 0},
+          "rotation": {"x": 0, "y": 0, "z": 0},
+          "scale": {"x": 1, "y": 1, "z": 1}
+        },
+        {
+          "type": "MeshFilter",
+          "mesh": "Capsule"
+        },
+        {
+          "type": "MeshRenderer",
+          "material": "Default"
+        },
+        {
+          "type": "CharacterController",
+          "radius": 0.5,
+          "height": 2.0,
+          "center": {"x": 0, "y": 0, "z": 0}
+        },
+        {
+          "type": "BotAI",
+          "moveSpeed": 3.0,
+          "rotationSpeed": 5.0,
+          "attackRange": 10.0,
+          "attackCooldown": 1.0,
+          "detectionRange": 15.0,
+          "maxHealth": 80,
+          "botTeam": "Enemy"
+        }
+      ],
+      "children": [
+        {
+          "name": "FirePoint",
+          "position": {"x": 0, "y": 1, "z": 1}
+        }
+      ]
+    },
+    "Projectile": {
+      "name": "Projectile",
+      "tag": "Untagged",
+      "components": [
+        {
+          "type": "Transform",
+          "position": {"x": 0, "y": 0, "z": 0},
+          "rotation": {"x": 0, "y": 0, "z": 0},
+          "scale": {"x": 0.2, "y": 0.2, "z": 0.2}
+        },
+        {
+          "type": "MeshFilter",
+          "mesh": "Sphere"
+        },
+        {
+          "type": "MeshRenderer",
+          "material": "Default"
+        },
+        {
+          "type": "Rigidbody",
+          "isKinematic": true,
+          "useGravity": false
+        },
+        {
+          "type": "SphereCollider",
+          "isTrigger": true,
+          "radius": 0.5
+        },
+        {
+          "type": "Projectile",
+          "speed": 15.0,
+          "damage": 10,
+          "lifetime": 5.0
+        }
+      ]
+    },
+    "ConquestZone": {
+      "name": "ConquestZone",
+      "tag": "Untagged",
+      "components": [
+        {
+          "type": "Transform",
+          "position": {"x": 0, "y": 0.5, "z": 0},
+          "rotation": {"x": 0, "y": 0, "z": 0},
+          "scale": {"x": 5, "y": 0.5, "z": 5}
+        },
+        {
+          "type": "MeshFilter",
+          "mesh": "Cylinder"
+        },
+        {
+          "type": "MeshRenderer",
+          "material": "Neutral"
+        },
+        {
+          "type": "BoxCollider",
+          "isTrigger": true,
+          "size": {"x": 5, "y": 1, "z": 5}
+        },
+        {
+          "type": "ConquestZone",
+          "captureSpeed": 1.0
+        }
+      ]
+    }
+  },
+  "materials": {
+    "Neutral": {
+      "name": "NeutralMaterial",
+      "color": {"r": 0.5, "g": 0.5, "b": 0.5, "a": 1.0},
+      "shader": "Universal Render Pipeline/Lit"
+    },
+    "Player": {
+      "name": "PlayerMaterial",
+      "color": {"r": 0.2, "g": 0.4, "b": 1.0, "a": 1.0},
+      "shader": "Universal Render Pipeline/Lit"
+    },
+    "Enemy": {
+      "name": "EnemyMaterial",
+      "color": {"r": 1.0, "g": 0.2, "b": 0.2, "a": 1.0},
+      "shader": "Universal Render Pipeline/Lit"
+    },
+    "Projectile": {
+      "name": "ProjectileMaterial",
+      "color": {"r": 1.0, "g": 1.0, "b": 0.2, "a": 1.0},
+      "shader": "Universal Render Pipeline/Lit",
+      "emissive": true,
+      "emissiveColor": {"r": 1.0, "g": 1.0, "b": 0.2, "a": 1.0}
+    }
+  },
+  "sceneSetup": {
+    "ground": {
+      "type": "Plane",
+      "scale": {"x": 10, "y": 1, "z": 10},
+      "position": {"x": 0, "y": 0, "z": 0},
+      "tag": "Environment"
+    },
+    "camera": {
+      "position": {"x": 0, "y": 15, "z": -10},
+      "rotation": {"x": 45, "y": 0, "z": 0},
+      "clearFlags": "Skybox",
+      "cullingMask": "Everything"
+    },
+    "directionalLight": {
+      "position": {"x": 0, "y": 3, "z": 0},
+      "rotation": {"x": 50, "y": -30, "z": 0},
+      "intensity": 1.0,
+      "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}
+    },
+    "spawnPoints": {
+      "player": {"x": 0, "y": 1, "z": -15},
+      "enemyTeam": [
+        {"x": -5, "y": 1, "z": 15},
+        {"x": 0, "y": 1, "z": 15},
+        {"x": 5, "y": 1, "z": 15}
+      ],
+      "playerTeam": [
+        {"x": -5, "y": 1, "z": -15},
+        {"x": 0, "y": 1, "z": -15},
+        {"x": 5, "y": 1, "z": -15}
+      ]
+    }
+  }
+}
